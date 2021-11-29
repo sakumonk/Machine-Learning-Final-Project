@@ -8,7 +8,7 @@ import torch.nn.functional as F
 import numpy as np
 
 from data import load
-from models import FeedForward, SimpleConvNN, BestNN
+from models import BestNN
 
 
 def get_args():
@@ -20,23 +20,15 @@ def get_args():
 
     # File locations 
     p.add_argument("--data-dir", type=str, default="release-data")
-    p.add_argument("--log-file", type=str, default="simple-cnn-logs.csv")
-    p.add_argument("--model-save", type=str, default="simple-cnn-model.torch")
-    p.add_argument("--predictions-file", type=str, default="simple-cnn-preds.txt")
+    p.add_argument("--log-file", type=str, default="best-logs.csv")
+    p.add_argument("--model-save", type=str, default="best-model.torch")
+    p.add_argument("--predictions-file", type=str, default="best-preds.txt")
 
     # hyperparameters
-    p.add_argument("--model", type=str, default="simple-cnn")
-    p.add_argument("--train-steps", type=int, default=3500) #orig default = 500, #best = 5000
-    p.add_argument("--batch-size", type=int, default=100) #orig default = 40, #best = 100
-    p.add_argument("--learning-rate", type=float, default=0.001) #orig default = 0.001, #best = 0.001
-
-    # simple-ff hparams
-    p.add_argument("--ff-hunits", type=int, default=100)
-
-    # simple-cnn hparams
-    p.add_argument('--cnn-n1-channels', type=int, default=80)
-    p.add_argument('--cnn-n1-kernel', type=int, default=10)
-    p.add_argument('--cnn-n2-kernel', type=int, default=5)
+    p.add_argument("--model", type=str, default="best")
+    p.add_argument("--train-steps", type=int, default=3500) 
+    p.add_argument("--batch-size", type=int, default=100) #limit is 120 (only 120 images in train)
+    p.add_argument("--learning-rate", type=float, default=0.001) 
 
     # best hparams
     p.add_argument('--best-n1-channels', type=int, default=80)
@@ -70,13 +62,7 @@ def train(args):
     dev_data, dev_labels = load(args.data_dir, split="dev")
 
     # Build model
-    if args.model.lower() == "simple-ff":
-        model = FeedForward(args.ff_hunits)
-    elif args.model.lower() == "simple-cnn":
-        model = SimpleConvNN(args.cnn_n1_channels,
-                            args.cnn_n1_kernel,
-                            args.cnn_n2_kernel)
-    elif args.model.lower() == "best":
+    if args.model.lower() == "best":
         model = BestNN(args.best_n1_channels,
                        args.best_n1_kernel,
                        args.best_n2_channels,
