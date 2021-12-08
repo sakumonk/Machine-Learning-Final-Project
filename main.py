@@ -6,6 +6,7 @@ import random
 import torch
 import torch.nn.functional as F
 import numpy as np
+from sklearn.decomposition import PCA
 
 from data import load
 from models import BestNN
@@ -29,6 +30,8 @@ def get_args():
     p.add_argument("--train-steps", type=int, default=3500) 
     p.add_argument("--batch-size", type=int, default=15) #limit is 120 (only 120 images in train)
     p.add_argument("--learning-rate", type=float, default=0.001) 
+    p.add_argument("--components", type=int, default=100) #for PCA reduction 
+
 
     # best hparams
     p.add_argument('--best-n1-channels', type=int, default=80)
@@ -60,6 +63,11 @@ def train(args):
     # load data
     train_data, train_labels = load(args.data_dir, split="train")
     dev_data, dev_labels = load(args.data_dir, split="dev")
+
+    #dimension reduction
+    pca = PCA(n_components=args.components, whiten=True).fit(train_data)
+    train_data = pca.transform(train_data)
+    dev_data = pca.transform(dev_data)
 
     # Build model
     if args.model.lower() == "best":
