@@ -130,7 +130,7 @@ def train(args):
 
 
 def approx_train_acc_and_loss(model, train_data, train_labels):
-    idxs = np.random.choice(len(train_data), 100, replace=False)
+    idxs = np.random.choice(len(train_data), 10, replace=False)
     x = torch.from_numpy(train_data[idxs].astype(np.float32))
     y = torch.from_numpy(train_labels[idxs].astype(np.int))
     y = torch.flatten(y)
