@@ -1,4 +1,4 @@
 .DS_Store
 *.npy
 *.csv
-*.pyx
+*.pyc
