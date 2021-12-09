@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 images = [f for f in os.listdir('yalefaces') if f != ".DS_Store"]
 X = [Image.open("./yalefaces/" + image) for image in images]
 
-#divide into test,dev, and train (test(22 images), train(120 images), dev(23 images))
+#divide into test,dev, and train (test, train, dev)
 label = []
 for image in images:
     if "subject11" in image:
