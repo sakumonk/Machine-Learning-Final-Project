@@ -66,7 +66,7 @@ labels_combined = np.concatenate((labels_combined, label_mirrored))
 
 
 train_features, dev_features, train_labels, dev_labels = train_test_split(features_combined, labels_combined, test_size=0.25, random_state=42)
-dev_features, test_features, dev_labels, test_labels = train_test_split(features_combined, labels_combined, test_size=0.5, random_state=42)
+dev_features, test_features, dev_labels, test_labels = train_test_split(dev_features, dev_labels, test_size=0.5, random_state=42)
 
 np.save("dev.feats", dev_features)
 np.save("test.feats", test_features)

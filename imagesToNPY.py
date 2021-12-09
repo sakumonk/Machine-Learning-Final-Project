@@ -1,6 +1,8 @@
 import numpy as np
 from PIL import Image
 import os
+from imageprocessing_helper_functions import flatten
+from sklearn.model_selection import train_test_split
 
 #yale images
 images = [f for f in os.listdir('yalefaces') if f != ".DS_Store"]
@@ -41,33 +43,17 @@ for image in images:
         label.append(1)
 
 label = np.array(label)
+features = flatten(X)
 
-dev_features = np.zeros((23,77760))
-test_features = np.zeros((22,77760))
-train_features = np.zeros((120,77760))
 
-dev_labels = np.zeros((23,1))
-test_labels = np.zeros((22,1))
-train_labels = np.zeros((120,1))
+train_features, dev_features, train_labels, dev_labels = train_test_split(features, label, test_size=0.4, random_state=42)
+dev_features, test_features, dev_labels, test_labels = train_test_split(dev_features, dev_labels, test_size=0.1, random_state=42)
 
-i = 0
-for currentImage in X:
-    data1 = np.asarray(currentImage)
-    data1 = data1.reshape((1, 243*320)) 
-    if (i < 120):
-        train_features[i,:] = data1
-        train_labels[i] = label[i]
-    elif (i >= 120 and i < 143):
-        dev_features[i-120,:] = data1
-        dev_labels[i-120] = label[i]
-    elif(i >= 143):
-        test_features[i-143,:] = data1
-        test_labels[i-143] = label[i]
-    i += 1
 
-np.save("dev.feats", dev_features)
-np.save("test.feats", test_features)
-np.save("train.feats", train_features)
-np.save("dev.labels", dev_labels)
-np.save("test.labels", test_labels)
-np.save("train.labels", train_labels)
+
+np.save(os.path.join("yalefaces_npy","dev.feats"), dev_features)
+np.save(os.path.join("yalefaces_npy","test.feats"), test_features)
+np.save(os.path.join("yalefaces_npy","train.feats"), train_features)
+np.save(os.path.join("yalefaces_npy","dev.labels"), dev_labels)
+np.save(os.path.join("yalefaces_npy","test.labels"), test_labels)
+np.save(os.path.join("yalefaces_npy","train.labels"), train_labels)
