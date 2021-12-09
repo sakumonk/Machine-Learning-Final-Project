@@ -3,10 +3,11 @@ from data import load
 from sklearn.decomposition import PCA
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report
+from PIL import Image as im
+import matplotlib.pyplot as plt
 
-
-train_data, train_labels = load("yalefaces_npy", split="train")
-dev_data, dev_labels = load("yalefaces_npy", split="dev")
+train_data, train_labels = load("yalefaces_npy_original_and_mirrored_and_blurred", split="train")
+dev_data, dev_labels = load("yalefaces_npy_original_and_mirrored_and_blurred/", split="dev")
 
 # Compute a PCA 
 n_components = 100
@@ -24,3 +25,6 @@ clf = MLPClassifier(hidden_layer_sizes=(1024,), batch_size=100, verbose=True, ea
 
 y_pred = clf.predict(X_test_pca)
 print(classification_report(dev_labels, y_pred))
+
+
+
