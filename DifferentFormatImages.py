@@ -2,7 +2,6 @@ import numpy as np
 from PIL import Image, ImageOps
 import os
 from imageprocessing_helper_functions import flatten
-from sklearn.model_selection import train_test_split
 
 
 def FiveMoreImages():
